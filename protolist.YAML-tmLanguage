@@ -1,0 +1,39 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: protolist
+scopeName: source.protolist
+fileTypes: [protolist]
+uuid: aeca2548-2611-4aae-8132-97631f3e48db
+
+patterns:
+- include: '#comment'
+- include: '#package'
+
+
+repository:
+  comment: 
+    patterns:
+    - name: comment.block.protolist
+      begin: \#
+      end: $\n?
+
+  proto:
+    begin: ([A-Za-z][A-Za-z0-9_]*)(\s*)
+    beginCaptures:
+      '1': {name: entity.name.type.protolist}
+    end: $\n?
+    patterns:
+    - include: '#comment'
+    - match: (:\[((\.([A-Za-z][A-Za-z0-9_]*))*)\])?(\s*)=(\s*)([0-9]+)
+      captures:
+        '2': {name: variable.parameter.function.protolist}
+        '7': {name: constant.numeric.protolist}
+
+  package:
+    begin: ([A-Za-z][A-Za-z0-9_]*)(\s*)
+    beginCaptures:
+      '1': {name: keyword.source.protolist}
+    end: \}
+    patterns:
+    - include: '#comment'
+    - include: '#proto'
